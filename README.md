@@ -1,18 +1,17 @@
-# Multithreaded Python HTTP/HTTPS Server
+# Multithreaded Python HTTP Server
 
-Ein einfacher, multithreaded Python-Server mit Unterstützung für HTTP und HTTPS (SSL).
+Ein einfacher, multithreaded Python-Server mit Benutzerregistrierung, Login und Session-Management.
 
 ## Features
 
 - **Multithreading**: Bearbeitet mehrere Client-Anfragen gleichzeitig.
-- **HTTPS-Unterstützung**: Einfache Aktivierung von sicherer Kommunikation über SSL/TLS.
-- **Thread-Info**: Antwortet mit Thread-Namen und der Anzahl der aktiven Threads.
-- **Leicht anpassbar**: Kann einfach erweitert und für spezifische Anwendungsfälle modifiziert werden.
+- **Session-Management**: Nutzer können sich registrieren, anmelden und ihre Sitzungen verwalten.
+- **Sichere Passwortspeicherung**: Passwörter werden mit SHA-256 gehasht.
+- **Datenspeicherung**: Benutzerinformationen werden in einer JSON-Datei gespeichert.
 
 ## Voraussetzungen
 
 - Python 3.7 oder neuer
-- Optional: SSL-Zertifikat und privater Schlüssel (`cert.pem` und `key.pem`) für HTTPS
 
 ## Installation
 
@@ -20,3 +19,35 @@ Ein einfacher, multithreaded Python-Server mit Unterstützung für HTTP und HTTP
    ```bash
    git clone <REPO-URL>
    cd <REPO-NAME>
+   ```
+
+2. Starte den Server:
+   ```bash
+   python server.py
+   ```
+
+## Endpunkte
+
+### Registrierung
+**POST /register**
+- **Body:** `{ "username": "testuser", "password": "testpass" }`
+- **Antwort:** `{ "message": "User registered successfully" }`
+
+### Login
+**POST /login**
+- **Body:** `{ "username": "testuser", "password": "testpass" }`
+- **Antwort:** `{ "message": "Login successful" }` (Setzt Session-Cookie)
+
+### Wert speichern
+**POST /write**
+- **Body:** `{ "varname": "color", "value": "blue" }`
+- **Antwort:** `{ "message": "Value stored", "color": "blue" }`
+
+### Wert abrufen
+**GET /read/{varname}**
+- **Antwort:** `{ "color": "blue" }` oder `{ "error": "Unauthorized" }`
+
+## Multithreading
+Der Server nutzt `ThreadingTCPServer`, um mehrere Anfragen gleichzeitig zu verarbeiten, sowie ein `threading.Lock`, um gleichzeitige Zugriffe auf `session_store` zu synchronisieren.
+
+
