@@ -16,6 +16,7 @@ Ein einfacher, multithreaded Python-Server mit Benutzerregistrierung, Login und 
 ## Installation
 
 1. Klone das Repository:
+
    ```bash
    git clone <REPO-URL>
    cd <REPO-NAME>
@@ -29,25 +30,32 @@ Ein einfacher, multithreaded Python-Server mit Benutzerregistrierung, Login und 
 ## Endpunkte
 
 ### Registrierung
+
 **POST /register**
+
 - **Body:** `{ "username": "testuser", "password": "testpass" }`
 - **Antwort:** `{ "message": "User registered successfully" }`
 
 ### Login
+
 **POST /login**
+
 - **Body:** `{ "username": "testuser", "password": "testpass" }`
 - **Antwort:** `{ "message": "Login successful" }` (Setzt Session-Cookie)
 
 ### Wert speichern
+
 **POST /write**
+
 - **Body:** `{ "varname": "color", "value": "blue" }`
 - **Antwort:** `{ "message": "Value stored", "color": "blue" }`
 
 ### Wert abrufen
+
 **GET /read/{varname}**
+
 - **Antwort:** `{ "color": "blue" }` oder `{ "error": "Unauthorized" }`
 
 ## Multithreading
-Der Server nutzt `ThreadingTCPServer`, um mehrere Anfragen gleichzeitig zu verarbeiten, sowie ein `threading.Lock`, um gleichzeitige Zugriffe auf `session_store` zu synchronisieren.
 
-
+Der Server nutzt `ThreadingTCPServer`, um mehrere Anfragen gleichzeitig zu verarbeiten, sowie ein `threading.Lock`, um gleichzeitige Zugriffe auf `session_store` und `users.json` zu synchronisieren.
